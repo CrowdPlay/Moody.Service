@@ -1,4 +1,5 @@
-﻿using MongoRepository;
+﻿using System.Linq;
+using MongoRepository;
 using Moody.Models.Data;
 using Moody.Models.Requests;
 
@@ -10,8 +11,15 @@ namespace Moody.Data
 
         public void Upsert(RequestUser requestUser)
         {
-            var user = User.Create(requestUser);
+            var user = GetByHandle(requestUser);
             UserRepository.Update(user);
+        }
+
+        public User GetByHandle(RequestUser requestUser)
+        {
+            var users = UserRepository.ToList();
+            var user = users.Find(u => u.TwitterHandle == requestUser.TwitterHandle);
+            return user == null ? User.Create(requestUser) : user.Copy(requestUser);
         }
     }
 }

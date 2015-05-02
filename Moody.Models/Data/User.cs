@@ -18,5 +18,13 @@ namespace Moody.Models.Data
                 TwitterHandle = requestUser.TwitterHandle
             };
         }
+
+        public User Copy(RequestUser requestUser)
+        {
+            Mood = requestUser.Mood;
+            Room = requestUser.Room;
+            TwitterHandle = requestUser.TwitterHandle;
+            return this;
+        }
     }
 }
