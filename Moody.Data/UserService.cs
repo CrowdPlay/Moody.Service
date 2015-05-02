@@ -17,9 +17,14 @@ namespace Moody.Data
 
         public User GetByHandle(RequestUser requestUser)
         {
-            var users = UserRepository.ToList();
-            var user = users.Find(u => u.TwitterHandle == requestUser.TwitterHandle);
+            var user = GetByHandle(requestUser.TwitterHandle);
             return user == null ? User.Create(requestUser) : user.Copy(requestUser);
+        }
+
+        public User GetByHandle(string requestUser)
+        {
+            var users = UserRepository.ToList();
+            return users.Find(u => u.TwitterHandle == requestUser);
         }
     }
 }
