@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Moody.ServiceContent" />
+    <Folder Include="Profiles" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="Moody.ServiceContent\diagnostics.wadcfgx" />
@@ -50,6 +51,9 @@
       <RoleType>Web</RoleType>
       <RoleName>Moody.Service</RoleName>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\moodystorageProduction.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
