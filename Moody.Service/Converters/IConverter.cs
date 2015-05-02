@@ -1,4 +1,4 @@
-﻿namespace Moody.Service
+﻿namespace Moody.Service.Converters
 {
     public interface IConverter<T, T1>
     {

@@ -1,16 +1,22 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Results;
-using Moody.Models;
+using Moody.Data;
 using Moody.Models.Data;
+using Moody.Models.Requests;
+using Moody.Service.Converters;
 
 namespace Moody.Service.Controllers
 {
     public class RoomController : ApiController
     {
-        public JsonResult<Track> Get(int id)
+        public JsonResult<RequestTrack> Get(int id)
         {
-            //TODO: pull track based on mood from db
-            return Json(new Track(43221994));
+            var service = new RoomService();
+            var converter = new TrackResponseConverter();
+            var track = service.GetCurrentTrack(id);
+            var response = converter.Convert(track);
+
+            return Json(response);
         }
     }
 }

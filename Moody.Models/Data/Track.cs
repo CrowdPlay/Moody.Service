@@ -1,12 +1,11 @@
+using System;
+using MongoRepository;
+
 namespace Moody.Models.Data
 {
-    public class Track
+    public class Track : Entity
     {
-        public int id { get; private set; }
-
-        public Track(int trackId)
-        {
-            id = trackId;
-        }
+        public int TrackId { get; set; }
+        public TimeSpan Duration { get; set; }
     }
 }

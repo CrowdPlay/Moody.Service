@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using Moody.Data;
 using Moody.Models.Requests;
+using Moody.Service.Converters;
 
 namespace Moody.Service.Controllers
 {
@@ -20,9 +21,10 @@ namespace Moody.Service.Controllers
         {
             var service = new UserService();
             var converter = new UserResponseConverter();
-
             var user = service.GetByHandle(id);
-            return Json(converter.Convert(user));
+            var response = converter.Convert(user);
+
+            return Json(response);
         }
     }
 }

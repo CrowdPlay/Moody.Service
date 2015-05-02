@@ -1,7 +1,7 @@
 ﻿using Moody.Models.Data;
 using Moody.Models.Requests;
 
-namespace Moody.Service
+namespace Moody.Service.Converters
 {
     public class UserResponseConverter : IConverter<User, RequestUser>
     {
