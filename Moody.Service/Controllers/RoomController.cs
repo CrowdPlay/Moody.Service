@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Results;
-using Moody.Service.Models;
+using Moody.Models;
+using Moody.Models.Data;
 
 namespace Moody.Service.Controllers
 {

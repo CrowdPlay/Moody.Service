@@ -1,4 +1,4 @@
-namespace Moody.Service.Models
+namespace Moody.Models.Data
 {
     public class Track
     {
