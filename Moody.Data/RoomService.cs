@@ -56,5 +56,10 @@ namespace Moody.Data
         {
             return RoomRepository.ToList().Select(r => r.RoomId);
         }
+
+        public Room GetById(int id)
+        {
+            return RoomRepository.ToList().Find(r => r.RoomId == id);
+        }
     }
 }

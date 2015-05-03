@@ -80,9 +80,12 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\GetAllMoodController.cs" />
+    <Compile Include="Controllers\RoomInfoController.cs" />
     <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="Controllers\GetAllRoomController.cs" />
+    <Compile Include="Controllers\UserWithoutRoomController.cs" />
     <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Converters\RoomResponseConverter.cs" />
     <Compile Include="Converters\TrackResponseConverter.cs" />
     <Compile Include="Converters\UserResponseConverter.cs" />
     <Compile Include="Controllers\RoomController.cs" />
