@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Moody.Data;
@@ -8,7 +9,7 @@ namespace Moody.Service.Controllers
 {
     public class GetAllRoomController : ApiController
     {
-        public JsonResult<IEnumerable<Room>> Get()
+        public JsonResult<IEnumerable<int>> Get()
         {
             var service = new RoomService();
             var rooms = service.GetAll();

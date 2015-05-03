@@ -40,19 +40,21 @@ namespace Moody.Data
             var currentTrackIndex = Array.IndexOf(mood.TrackInfo, track);
             if (currentTrackIndex < mood.TrackInfo.Length - 1)
             {
-                room.CurrentTrackId++;
+                currentTrackIndex++;
             }
             else
             {
-                room.CurrentTrackId = 0;
+                currentTrackIndex = 0;
             }
 
-            room.TrackEndTime = DateTime.UtcNow.Add(mood.TrackInfo.First(t => t.TrackId == room.CurrentTrackId).Duration);
+            var nextTrack = mood.TrackInfo[currentTrackIndex];
+            room.CurrentTrackId = nextTrack.TrackId;
+            room.TrackEndTime = DateTime.UtcNow.Add(nextTrack.Duration);
         }
 
-        public IEnumerable<Room> GetAll()
+        public IEnumerable<int> GetAll()
         {
-            return RoomRepository.ToList();
+            return RoomRepository.ToList().Select(r => r.RoomId);
         }
     }
 }
