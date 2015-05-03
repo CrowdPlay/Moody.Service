@@ -1,9 +1,7 @@
 ﻿namespace Moody.Models.Requests
 {
-    public class RequestUser
+    public class RequestUser : RequestUserWithoutRoom
     {
-        public string Mood { get; set; }
         public int Room { get; set; }
-        public string TwitterHandle { get; set; }
     }
 }

@@ -10,11 +10,11 @@ namespace Moody.Service.Controllers
 {
     public class UserController : ApiController
     {
-        public HttpResponseMessage Put(RequestUser user)
+        public JsonResult<int> Put(RequestUser user)
         {
             var service = new UserService();
-            service.Upsert(user);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            var roomid = service.Upsert(user);
+            return Json(roomid);
         }
 
         public JsonResult<RequestUser> Get(string id)

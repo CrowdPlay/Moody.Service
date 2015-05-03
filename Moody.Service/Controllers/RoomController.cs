@@ -19,13 +19,5 @@ namespace Moody.Service.Controllers
 
             return Json(response);
         }
-
-        public JsonResult<IEnumerable<Room>> GetAll()
-        {
-            var service = new RoomService();
-            var rooms = service.GetAll();
-
-            return Json(rooms);
-        }
     }
 }

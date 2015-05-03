@@ -2,6 +2,6 @@
 {
     public class RequestTrack
     {
-        public int Id { get; set; }
+        public int id { get; set; }
     }
 }

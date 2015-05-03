@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoRepository;
 using Moody.Models.Data;
-using Moody.Models.Requests;
 
 namespace Moody.Data
 {
@@ -27,7 +26,7 @@ namespace Moody.Data
         private int UpdateWithNextTrack(Room room)
         {
             var moods = MoodRepository.ToList();
-            var mood = moods.Find(m => m.Name == room.Mood);
+            var mood = moods.Find(m => String.Equals(m.Name, room.Mood, StringComparison.InvariantCultureIgnoreCase));
             var currentTrack = mood.TrackInfo.First(t => t.TrackId == room.CurrentTrackId);
 
             SetNextTrackInfo(room, mood, currentTrack);

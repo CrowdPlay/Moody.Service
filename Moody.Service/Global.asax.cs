@@ -13,6 +13,7 @@ namespace Moody.Service
             var settings = jsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            formatters.XmlFormatter.UseXmlSerializer = true;
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

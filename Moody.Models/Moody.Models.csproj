@@ -53,8 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\Track.cs" />
     <Compile Include="Data\User.cs" />
+    <Compile Include="Requests\InboundMessage.cs" />
     <Compile Include="Requests\RequestTrack.cs" />
     <Compile Include="Requests\RequestUser.cs" />
+    <Compile Include="Requests\RequestUserWithoutRoom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

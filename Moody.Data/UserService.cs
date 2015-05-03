@@ -13,32 +13,35 @@ namespace Moody.Data
         private static readonly MongoRepository<Room> RoomRepository = new MongoRepository<Room>();
         private static readonly MongoRepository<Mood> MoodRepository = new MongoRepository<Mood>();
 
-        public void Upsert(RequestUser requestUser)
+        public int Upsert(RequestUser requestUser)
         {
+            var result = GetByHandle(requestUser);
             
-            var user = GetByHandle(requestUser);
+            UserRepository.Update(result.Item1);
 
-            UserRepository.Update(user);
+            return result.Item2;
         }
 
-        public User GetByHandle(RequestUser requestUser)
+        public Tuple<User, int> GetByHandle(RequestUser requestUser)
         {
             var user = GetByHandle(requestUser.TwitterHandle);
 
             if (user == null)
             {
+                var roomId = UpsertRoom(requestUser);
+                requestUser.Room = roomId;
                 var result = User.Create(requestUser);
-                UpsertRoom(requestUser);
-                return result;
+                return new Tuple<User, int>(result, roomId);
             }
             else
             {
-                UpsertRooms(requestUser, user.Room);
-                return user.Copy(requestUser);
+                var roomId = UpsertRooms(requestUser, user.Room);
+                requestUser.Room = roomId;
+                return new Tuple<User, int>(user.Copy(requestUser), roomId);
             }
         }
 
-        private void UpsertRooms(RequestUser requestUser, int oldRoomId)
+        private int UpsertRooms(RequestUser requestUser, int oldRoomId)
         {
             if (oldRoomId != requestUser.Room)
             {
@@ -48,7 +51,7 @@ namespace Moody.Data
 
                 RoomRepository.Update(oldRoom);
             }
-            UpsertRoom(requestUser);
+            return UpsertRoom(requestUser);
         }
 
         public User GetByHandle(string requestUser)
@@ -57,7 +60,7 @@ namespace Moody.Data
             return users.Find(u => u.TwitterHandle == requestUser);
         }
 
-        private void UpsertRoom(RequestUser requestUser)
+        private int UpsertRoom(RequestUser requestUser)
         {
             var rooms = RoomRepository.ToList();
             var room = rooms.Find(r => r.RoomId == requestUser.Room);
@@ -65,16 +68,26 @@ namespace Moody.Data
             if (room != null)
             {
                 UpdateRoom(requestUser, room);
+                return room.RoomId;
             }
             else
             {
-                CreateRoom(requestUser, rooms);
+                return CreateRoom(requestUser, rooms);
             }
         }
 
         private static void UpdateRoom(RequestUser requestUser, Room room)
         {
-            room.RoomUsers.Add(new RoomUser {Handle = requestUser.TwitterHandle, Mood = requestUser.Mood});
+            var roomUser = room.RoomUsers.FirstOrDefault(u => u.Handle == requestUser.TwitterHandle);
+            if (roomUser == null)
+            {
+                room.RoomUsers.Add(new RoomUser { Handle = requestUser.TwitterHandle, Mood = requestUser.Mood });
+            }
+            else
+            {
+                roomUser.Mood = requestUser.Mood;
+            }
+
             if (requestUser.Mood != room.Mood)
             {
                 var track = GetFirstTrackForMood(requestUser);
@@ -89,23 +102,41 @@ namespace Moody.Data
         private static Track GetFirstTrackForMood(RequestUser requestUser)
         {
             var moods = MoodRepository.ToList();
-            var mood = moods.Find(m => m.Name == requestUser.Mood);
+            var mood = moods.Find(m => String.Equals(m.Name, requestUser.Mood, StringComparison.InvariantCultureIgnoreCase));
             var track = mood.TrackInfo[0];
             return track;
         }
 
-        private static void CreateRoom(RequestUser requestUser, List<Room> rooms)
+        private static int CreateRoom(RequestUser requestUser, List<Room> rooms)
         {
             var track = GetFirstTrackForMood(requestUser);
 
+            var roomId = rooms.Count + 1;
             RoomRepository.Add(new Room
             {
                 Mood = requestUser.Mood,
                 RoomUsers = new[] {new RoomUser {Handle = requestUser.TwitterHandle, Mood = requestUser.Mood}},
                 CurrentTrackId = track.TrackId,
                 TrackEndTime = DateTime.UtcNow.Add(track.Duration),
-                RoomId = rooms.Count + 1
+                RoomId = roomId
             });
+            return roomId;
+        }
+
+        public void Upsert(RequestUserWithoutRoom requestUser)
+        {
+            var user = GetByHandle(requestUser.TwitterHandle);
+
+            if (user != null)
+            {
+                var userWithRoom = new RequestUser()
+                {
+                    Mood = requestUser.Mood,
+                    Room = user.Room,
+                    TwitterHandle = requestUser.TwitterHandle
+                };
+                Upsert(userWithRoom);
+            }
         }
     }
 }

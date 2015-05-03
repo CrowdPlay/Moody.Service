@@ -9,7 +9,7 @@ namespace Moody.Service.Converters
         {
             return new RequestTrack
             {
-                Id = track.TrackId
+                id = track.TrackId
             };
         }
     }
