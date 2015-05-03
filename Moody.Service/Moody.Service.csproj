@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GetAllRoomController.cs" />
     <Compile Include="Converters\IConverter.cs" />
     <Compile Include="Converters\TrackResponseConverter.cs" />
     <Compile Include="Converters\UserResponseConverter.cs" />

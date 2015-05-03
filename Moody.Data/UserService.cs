@@ -15,6 +15,7 @@ namespace Moody.Data
 
         public void Upsert(RequestUser requestUser)
         {
+            
             var user = GetByHandle(requestUser);
 
             UserRepository.Update(user);

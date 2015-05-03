@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using System.Web.Http.Results;
 using Moody.Data;
 using Moody.Models.Data;
@@ -17,6 +18,14 @@ namespace Moody.Service.Controllers
             var response = converter.Convert(track);
 
             return Json(response);
+        }
+
+        public JsonResult<IEnumerable<Room>> GetAll()
+        {
+            var service = new RoomService();
+            var rooms = service.GetAll();
+
+            return Json(rooms);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoRepository;
 using Moody.Models.Data;
+using Moody.Models.Requests;
 
 namespace Moody.Data
 {
@@ -47,6 +49,11 @@ namespace Moody.Data
             }
 
             room.TrackEndTime = DateTime.UtcNow.Add(mood.TrackInfo.First(t => t.TrackId == room.CurrentTrackId).Duration);
+        }
+
+        public IEnumerable<Room> GetAll()
+        {
+            return RoomRepository.ToList();
         }
     }
 }
